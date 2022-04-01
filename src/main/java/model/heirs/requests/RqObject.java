@@ -7,9 +7,12 @@ import model.RxObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 public class RqObject extends RxObject {
     private static final String BASE_URI = "https://petstore.swagger.io";
+
+    public final Function<String, String> prepareUri = uri -> String.format("%s%s", BASE_URI, uri);
 
     protected RequestSpecification requestSpecification;
 

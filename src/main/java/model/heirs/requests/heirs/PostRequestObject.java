@@ -4,6 +4,7 @@ import entities.Category;
 import entities.Tag;
 import entities.enums.PetStatus;
 import model.heirs.requests.RqObject;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,19 +34,20 @@ public class PostRequestObject extends RqObject {
         return requestBody;
     }
 
-    public void createRequestForCreatingPet(String email, String name, String status, String gender) throws JSONException {
-        setBaseUri();
+    public void createRequestForCreatingPet(int id, Category category, String name, String photoUrls,
+                                            Tag tags, PetStatus status) throws JSONException {
+        setBaseUri("https://petstore.swagger.io/v2/pet");
         setCommonParams();
-//        requestSpecification.body(createUserAsJsonObject(email, name, status, gender).toString());
+        requestSpecification.body(createPetAsJsonObject(id, category, name, photoUrls, tags, status).toString());
     }
 
-    private JSONObject createPetAsJsonObject(int id, Category category, String name, String[] photoUrls, Tag tags, PetStatus status) throws JSONException {
+    private JSONObject createPetAsJsonObject(int id, Category category, String name, String photoUrls, Tag tags, PetStatus status) throws JSONException {
         JSONObject requestBody = new JSONObject();
         requestBody.put("id", id);
         requestBody.put("category", createCategoryAsJsonObject(category.getId(), category.getName()));
         requestBody.put("name", name);
-        requestBody.put("photoUrls", photoUrls);
-        requestBody.put("tags", createTagAsJsonObject(tags.getId(), tags.getName()));
+        requestBody.put("photoUrls", new JSONArray().put(photoUrls));
+        requestBody.put("tags", new JSONArray().put(createTagAsJsonObject(tags.getId(), tags.getName())));
         requestBody.put("status", status.name());
         return requestBody;
     }

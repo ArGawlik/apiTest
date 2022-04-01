@@ -14,4 +14,6 @@ public class PostResponseObject extends RsObject {
         return response.jsonPath().get(RESULT_ID_LOCATOR);
     }
 
+    public String getPetName() {return response.jsonPath().get("name");}
+
 }
