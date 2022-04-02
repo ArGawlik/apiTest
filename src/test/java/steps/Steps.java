@@ -4,13 +4,17 @@ import com.store.CategoriesStore;
 import com.store.RxStore;
 import com.store.TagsStore;
 import entities.Category;
+import entities.Pet;
 import entities.Tag;
+import entities.User;
 import entities.enums.PetStatus;
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import model.heirs.requests.RqObject;
+import model.heirs.requests.heirs.GetRequestObject;
 import model.heirs.requests.heirs.PostRequestObject;
 import model.heirs.responses.RsObject;
 import model.heirs.responses.heirs.DeleteResponseObject;
@@ -42,18 +46,38 @@ public class Steps {
         }
     }
 
+//    @Given("User has {string} request with following parameters")
+//    public void userHasRequestWithFollowingParameters(String rqName, DataTable dataTable) {
+//        PostRequestObject postRequestObject = new PostRequestObject(rqName);
+//        List<String> dataList = dataTable.row(1);
+//        String id = dataList.get(0);
+//        Category category = categoriesStore.getCategoryFromStore(dataList.get(1));
+//        String name = dataList.get(2);
+//        String[] photoUrls = dataList.get(3).split(", ");
+//        Tag[] tags = Arrays.stream(dataList.get(4).split(", "))
+//                .map(x -> tagsStore.getTagFromStore(x)).toArray(Tag[]::new);
+//        PetStatus status = PetStatus.valueOf(dataList.get(5));
+//        postRequestObject.createRequestForAddingNewPet(id, category, name, photoUrls, tags, status);
+//        rxStore.putDataIntoStore(rqName, postRequestObject);
+//    }
+
     @Given("User has {string} request with following parameters")
     public void userHasRequestWithFollowingParameters(String rqName, DataTable dataTable) {
         PostRequestObject postRequestObject = new PostRequestObject(rqName);
-        List<String> dataList = dataTable.row(1);
-        String id = dataList.get(0);
-        Category category = categoriesStore.getCategoryFromStore(dataList.get(1));
-        String name = dataList.get(2);
-        String[] photoUrls = dataList.get(3).split(", ");
-        Tag[] tags1 = Arrays.stream(dataList.get(4).split(", "))
-                .map(x -> tagsStore.getTagFromStore(x)).toArray(Tag[]::new);
-        PetStatus status = PetStatus.valueOf(dataList.get(5));
-        postRequestObject.createRequestForAddingNewPet(id, category, name, photoUrls, tags1, status);
+        switch (rqName) {
+            case "addNewPetRQ" -> {
+                List<String> dataList = dataTable.row(1);
+                Pet pet = new Pet(dataList);
+                postRequestObject.createRequestForAddingNewPet(pet);
+            }
+            case "addNewUserRQ" -> {
+                List<String> dataList = dataTable.row(1);
+                User user = new User(dataList);
+                postRequestObject.createRequestForCreatingUser(user);
+            }
+            default -> throw new IllegalArgumentException("Unexpected value" + rqName);
+        }
+
         rxStore.putDataIntoStore(rqName, postRequestObject);
     }
 
@@ -76,5 +100,25 @@ public class Steps {
         RsObject rsObject = (RsObject) rxStore.getDataFromStore(rsName);
         Assert.assertEquals(rsObject.getStatusCode(), Integer.parseInt(rsCode),
                 "Response code doesn't match");
+    }
+
+    @And("Pet name in {string} response is {string}")
+    public void petNameIs(String rsName, String petName) {
+        RsObject postResponseObject = (RsObject) rxStore.getDataFromStore(rsName);
+        Assert.assertEquals(postResponseObject.getPetName(), petName);
+    }
+
+    @Given("User has {string} request with id {string}")
+    public void userHasRequestWithId(String rqName, String petId) {
+        GetRequestObject getRequestObject = new GetRequestObject(rqName);
+        getRequestObject.createRequestForGettingPetById(petId);
+
+        rxStore.putDataIntoStore(rqName, getRequestObject);
+    }
+
+    @And("Message for {string} response is {string}")
+    public void messageForResponseIs(String rsName, String messageId) {
+        PostResponseObject rsObject = (PostResponseObject) rxStore.getDataFromStore(rsName);
+        Assert.assertEquals(rsObject.getUserIdMessage(), messageId);
     }
 }

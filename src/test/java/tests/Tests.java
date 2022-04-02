@@ -1,7 +1,9 @@
 package tests;
 
 import entities.Category;
+import entities.Pet;
 import entities.Tag;
+import entities.User;
 import entities.enums.PetStatus;
 import model.heirs.requests.heirs.DeleteRequestObject;
 import model.heirs.requests.heirs.GetRequestObject;
@@ -16,7 +18,7 @@ public class Tests {
     @Test
     public void getPetById() {
         GetRequestObject getRequestObject = new GetRequestObject("asd");
-        getRequestObject.createRequestForGettingPetById(2137);
+        getRequestObject.createRequestForGettingPetById("2137");
         GetResponseObject getResponseObject = new GetResponseObject("asd", getRequestObject.sendGetRequest());
         Assert.assertEquals(getResponseObject.getPetName(), "Rex");
     }
@@ -47,10 +49,11 @@ public class Tests {
     @Test
     public void createUser() {
         PostRequestObject postRequestObject = new PostRequestObject("asd");
-        postRequestObject.createRequestForCreatingUser(2137, "username", "firstName", "lastName"
-                , "email@gmail.com", "some_password123", "123456789", 0);
+        User user = new User("2137", "username", "firstName", "lastName"
+                , "email@gmail.com", "some_password123", "123456789", "0");
+        postRequestObject.createRequestForCreatingUser(user);
         PostResponseObject postResponseObject = new PostResponseObject("asd", postRequestObject.sendPostRequest());
-        Assert.assertEquals(postResponseObject.getUserId(), "1");
+        Assert.assertEquals(postResponseObject.getUserIdMessage(), "1");
     }
 
     @Test
@@ -76,7 +79,8 @@ public class Tests {
         Tag tag = new Tag("123", "some tag");
         Tag[] tags = new Tag[]{tag};
         String[] urls = new String[]{"https://photo.com"};
-        postRequestObject.createRequestForAddingNewPet("2137", category, "Rex", urls, tags, PetStatus.available);
+        Pet pet = new Pet("2137", category, "Rex", urls, tags, PetStatus.available);
+        postRequestObject.createRequestForAddingNewPet(pet);
         PostResponseObject postResponseObject = new PostResponseObject("asd", postRequestObject.sendPostRequest());
         Assert.assertEquals(postResponseObject.getPetName(), "Rex");
     }

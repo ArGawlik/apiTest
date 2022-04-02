@@ -10,7 +10,7 @@ public class PostResponseObject extends RsObject {
         super(rsName, response);
     }
 
-    public String getUserId() {
+    public String getUserIdMessage() {
         return response.jsonPath().get(RESULT_ID_LOCATOR);
     }
 

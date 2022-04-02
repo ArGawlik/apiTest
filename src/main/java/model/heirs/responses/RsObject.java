@@ -14,4 +14,8 @@ public class RsObject extends RxObject {
     public int getStatusCode() {
         return response.getStatusCode();
     }
+
+    public String getPetName() {
+        return response.jsonPath().get("name");
+    }
 }

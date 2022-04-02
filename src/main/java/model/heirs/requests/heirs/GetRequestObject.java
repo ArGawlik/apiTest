@@ -15,7 +15,7 @@ public class GetRequestObject extends RqObject {
 //        setCommonParams();
 //    }
 
-    public void createRequestForGettingPetById(int petId) {
+    public void createRequestForGettingPetById(String petId) {
         setBaseUri("https://petstore.swagger.io/v2/pet/" + petId);
         setCommonParams();
     }

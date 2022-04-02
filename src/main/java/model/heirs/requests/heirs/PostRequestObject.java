@@ -1,8 +1,8 @@
 package model.heirs.requests.heirs;
 
-import entities.Category;
+import entities.Pet;
 import entities.Tag;
-import entities.enums.PetStatus;
+import entities.User;
 import model.heirs.requests.RqObject;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,42 +13,39 @@ public class PostRequestObject extends RqObject {
         super(rqName);
     }
 
-    public void createRequestForCreatingUser(int id, String username, String firstName, String lastName, String email,
-                                             String password, String phone, int userStatus) throws JSONException {
+    public void createRequestForCreatingUser(User user) throws JSONException {
         setBaseUri("https://petstore.swagger.io/v2/user");
         setCommonParams();
-        requestSpecification.body(createUserAsJsonObject(id, username, firstName, lastName, email, password, phone, userStatus).toString());
+        requestSpecification.body(createUserAsJsonObject(user).toString());
     }
 
-    private JSONObject createUserAsJsonObject(int id, String username, String firstName, String lastName, String email,
-                                              String password, String phone, int userStatus) throws JSONException {
+    private JSONObject createUserAsJsonObject(User user) throws JSONException {
         JSONObject requestBody = new JSONObject();
-            requestBody.put("id", id);
-            requestBody.put("username", username);
-            requestBody.put("firstName", firstName);
-            requestBody.put("lastName", lastName);
-            requestBody.put("email", email);
-            requestBody.put("password", password);
-            requestBody.put("phone", phone);
-            requestBody.put("userStatus", userStatus);
+        requestBody.put("id", user.getId());
+        requestBody.put("username", user.getUsername());
+        requestBody.put("firstName", user.getFirstName());
+        requestBody.put("lastName", user.getLastName());
+        requestBody.put("email", user.getEmail());
+        requestBody.put("password", user.getUsername());
+        requestBody.put("phone", user.getPhone());
+        requestBody.put("userStatus", user.getUserStatus());
         return requestBody;
     }
 
-    public void createRequestForAddingNewPet(String id, Category category, String name, String[] photoUrls,
-                                             Tag[] tags, PetStatus status) throws JSONException {
+    public void createRequestForAddingNewPet(Pet pet) throws JSONException {
         setBaseUri("https://petstore.swagger.io/v2/pet");
         setCommonParams();
-        requestSpecification.body(createPetAsJsonObject(id, category, name, photoUrls, tags, status).toString());
+        requestSpecification.body(createPetAsJsonObject(pet).toString());
     }
 
-    private JSONObject createPetAsJsonObject(String id, Category category, String name, String[] photoUrls, Tag[] tags, PetStatus status) throws JSONException {
+    private JSONObject createPetAsJsonObject(Pet pet) throws JSONException {
         JSONObject requestBody = new JSONObject();
-        requestBody.put("id", id);
-        requestBody.put("category", createCategoryAsJsonObject(category.getId(), category.getName()));
-        requestBody.put("name", name);
-        requestBody.put("photoUrls", createArrayForPhotoUrls(photoUrls));
-        requestBody.put("tags", createTagAsJsonObject(tags));
-        requestBody.put("status", status.name());
+        requestBody.put("id", pet.getId());
+        requestBody.put("category", createCategoryAsJsonObject(pet.getCategory().getId(), pet.getCategory().getName()));
+        requestBody.put("name", pet.getName());
+        requestBody.put("photoUrls", createArrayForPhotoUrls(pet.getPhotoUrls()));
+        requestBody.put("tags", createTagAsJsonObject(pet.getTags()));
+        requestBody.put("status", pet.getStatus().name());
         return requestBody;
     }
 
