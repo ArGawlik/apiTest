@@ -25,10 +25,10 @@ public class GetRequestObject extends RqObject {
         setCommonParams();
     }
 
-    public void createRequestForGettingUserByUserName(String id) {
-        setBaseUri("https://petstore.swagger.io/v2/user/" + id);
+    public void createRequestForGettingUserByUserName(String username) {
+        setBaseUri("https://petstore.swagger.io/v2/user/" + username);
         setCommonParams();
         requestSpecification.expect().statusCode(HttpStatus.SC_OK).log().ifError()
-                .when().get(prepareUri.apply("/v2/user/" + id));
+                .when().get(prepareUri.apply("/v2/user/" + username));
     }
 }

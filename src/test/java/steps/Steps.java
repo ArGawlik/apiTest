@@ -121,4 +121,18 @@ public class Steps {
         PostResponseObject rsObject = (PostResponseObject) rxStore.getDataFromStore(rsName);
         Assert.assertEquals(rsObject.getUserIdMessage(), messageId);
     }
+
+    @Given("User has {string} request with username {string}")
+    public void userHasRequestWithUsername(String rqName, String username) {
+        GetRequestObject getRequestObject = new GetRequestObject(rqName);
+        getRequestObject.createRequestForGettingUserByUserName(username);
+
+        rxStore.putDataIntoStore(rqName, getRequestObject);
+    }
+
+    @And("User last name for {string}  is {string}")
+    public void userLastNameForIs(String rsName, String lastName) {
+        GetResponseObject getResponseObject = (GetResponseObject) rxStore.getDataFromStore(rsName);
+        Assert.assertEquals(getResponseObject.getUserLastName(), lastName);
+    }
 }

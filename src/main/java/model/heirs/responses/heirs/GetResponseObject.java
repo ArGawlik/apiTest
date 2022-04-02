@@ -25,6 +25,10 @@ public class GetResponseObject extends RsObject {
         return response.jsonPath().get("name");
     }
 
+    public String getUserLastName() {
+        return response.jsonPath().get("lastName");
+    }
+
     public List<String> getPets() {
         return response.jsonPath().getList("name");
     }

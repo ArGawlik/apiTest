@@ -40,3 +40,14 @@ Feature: Scenario of pet shop api testing
 
     Then "addNewUserRS" code is "200"
     And Message for "addNewUserRS" response is "32"
+
+  Scenario: Getting user by username
+
+    Given User has "getUserByUsernameRQ" request with username "doglover123"
+
+    When User sends "GET" "getUserByUsernameRQ" request
+
+    Then "getUserByUsernameRS" code is "200"
+    And User last name for "getUserByUsernameRS"  is "Rambo"
+
+
