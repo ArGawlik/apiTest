@@ -50,4 +50,19 @@ Feature: Scenario of pet shop api testing
     Then "getUserByUsernameRS" code is "200"
     And User last name for "getUserByUsernameRS"  is "Rambo"
 
+  Scenario: Deleting user by username
 
+    Given User has "deleteUserByUsernameRQ" delete request with username "doglover123"
+
+    When User sends "DELETE" "deleteUserByUsernameRQ" request
+
+    Then "deleteUserByUsernameRS" code is "200"
+    And Message for "deleteUserByUsernameRS" response is "doglover123"
+
+  Scenario: Getting deleted user - expected 404
+
+    Given User has "getUserByUsernameRQ" request with username "doglover123"
+
+    When User sends "GET" "getUserByUsernameRQ" request
+
+    Then "getUserByUsernameRS" code is "404"

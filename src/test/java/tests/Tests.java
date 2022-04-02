@@ -53,7 +53,7 @@ public class Tests {
                 , "email@gmail.com", "some_password123", "123456789", "0");
         postRequestObject.createRequestForCreatingUser(user);
         PostResponseObject postResponseObject = new PostResponseObject("asd", postRequestObject.sendPostRequest());
-        Assert.assertEquals(postResponseObject.getUserIdMessage(), "1");
+        Assert.assertEquals(postResponseObject.getMessage(), "1");
     }
 
     @Test

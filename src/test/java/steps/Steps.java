@@ -13,7 +13,9 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.cucumber.java.hu.De;
 import model.heirs.requests.RqObject;
+import model.heirs.requests.heirs.DeleteRequestObject;
 import model.heirs.requests.heirs.GetRequestObject;
 import model.heirs.requests.heirs.PostRequestObject;
 import model.heirs.responses.RsObject;
@@ -118,8 +120,8 @@ public class Steps {
 
     @And("Message for {string} response is {string}")
     public void messageForResponseIs(String rsName, String messageId) {
-        PostResponseObject rsObject = (PostResponseObject) rxStore.getDataFromStore(rsName);
-        Assert.assertEquals(rsObject.getUserIdMessage(), messageId);
+        RsObject rsObject = (RsObject) rxStore.getDataFromStore(rsName);
+        Assert.assertEquals(rsObject.getMessage(), messageId);
     }
 
     @Given("User has {string} request with username {string}")
@@ -135,4 +137,13 @@ public class Steps {
         GetResponseObject getResponseObject = (GetResponseObject) rxStore.getDataFromStore(rsName);
         Assert.assertEquals(getResponseObject.getUserLastName(), lastName);
     }
+
+    @Given("User has {string} delete request with username {string}")
+    public void userHasDeleteRequestWithUsername(String rqName, String username) {
+        DeleteRequestObject deleteRequestObject = new DeleteRequestObject(rqName);
+        deleteRequestObject.createRequestForDeletetingUser(username);
+
+        rxStore.putDataIntoStore(rqName, deleteRequestObject);
+    }
+
 }

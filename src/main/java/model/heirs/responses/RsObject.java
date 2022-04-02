@@ -18,4 +18,6 @@ public class RsObject extends RxObject {
     public String getPetName() {
         return response.jsonPath().get("name");
     }
+
+    public String getMessage() {return response.jsonPath().get("message"); }
 }
