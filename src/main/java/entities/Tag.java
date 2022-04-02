@@ -8,14 +8,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 public class Tag {
-    private int id;
+    private String id;
     private String name;
-
-    @Override
-    public String toString() {
-        return "Tag{"+
-                "id="+id+
-                ", name="+name+
-                "}";
-    }
 }

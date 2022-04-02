@@ -34,32 +34,44 @@ public class PostRequestObject extends RqObject {
         return requestBody;
     }
 
-    public void createRequestForCreatingPet(int id, Category category, String name, String photoUrls,
-                                            Tag tags, PetStatus status) throws JSONException {
+    public void createRequestForAddingNewPet(String id, Category category, String name, String[] photoUrls,
+                                             Tag[] tags, PetStatus status) throws JSONException {
         setBaseUri("https://petstore.swagger.io/v2/pet");
         setCommonParams();
         requestSpecification.body(createPetAsJsonObject(id, category, name, photoUrls, tags, status).toString());
     }
 
-    private JSONObject createPetAsJsonObject(int id, Category category, String name, String photoUrls, Tag tags, PetStatus status) throws JSONException {
+    private JSONObject createPetAsJsonObject(String id, Category category, String name, String[] photoUrls, Tag[] tags, PetStatus status) throws JSONException {
         JSONObject requestBody = new JSONObject();
         requestBody.put("id", id);
         requestBody.put("category", createCategoryAsJsonObject(category.getId(), category.getName()));
         requestBody.put("name", name);
-        requestBody.put("photoUrls", new JSONArray().put(photoUrls));
-        requestBody.put("tags", new JSONArray().put(createTagAsJsonObject(tags.getId(), tags.getName())));
+        requestBody.put("photoUrls", createArrayForPhotoUrls(photoUrls));
+        requestBody.put("tags", createTagAsJsonObject(tags));
         requestBody.put("status", status.name());
         return requestBody;
     }
 
-    private JSONObject createTagAsJsonObject(int id, String name) {
-        JSONObject requestBody = new JSONObject();
-        requestBody.put("id", id);
-        requestBody.put("name", name);
-        return requestBody;
+    private JSONArray createTagAsJsonObject(Tag[] tags) {
+        JSONArray jsonArray = new JSONArray();
+        for (Tag tag: tags) {
+            JSONObject requestBody = new JSONObject();
+            requestBody.put("id", tag.getId());
+            requestBody.put("name", tag.getName());
+            jsonArray.put(requestBody);
+        }
+        return jsonArray;
     }
 
-    private JSONObject createCategoryAsJsonObject(int id, String name) {
+    private JSONArray createArrayForPhotoUrls(String[] urls) {
+        JSONArray jsonArray = new JSONArray();
+        for (String url: urls) {
+            jsonArray.put(url);
+        }
+        return jsonArray;
+    }
+
+    private JSONObject createCategoryAsJsonObject(String id, String name) {
         JSONObject requestBody = new JSONObject();
         requestBody.put("id", id);
         requestBody.put("name", name);

@@ -10,18 +10,18 @@ public class GetRequestObject extends RqObject {
         super(rqName);
     }
 
-    public void createRequestForGettingUsers() {
-        setBaseUri("https://gorest.co.in/public/v2/users");
-        setCommonParams();
-    }
+//    public void createRequestForGettingUsers() {
+//        setBaseUri("https://gorest.co.in/public/v2/users");
+//        setCommonParams();
+//    }
 
-    public void createRequestForGettingPetById(String petId) {
+    public void createRequestForGettingPetById(int petId) {
         setBaseUri("https://petstore.swagger.io/v2/pet/" + petId);
         setCommonParams();
     }
 
     public void createRequestForGettingPetsByStatus(PetStatus status) {
-        setBaseUri("https://petstore.swagger.io/v2/pet/findByStatus?status=" + "available");
+        setBaseUri("https://petstore.swagger.io/v2/pet/findByStatus?status=sold");
         setCommonParams();
     }
 

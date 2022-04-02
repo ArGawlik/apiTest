@@ -8,6 +8,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 public class Category {
-    private int id;
+    private String id;
     private String name;
 }

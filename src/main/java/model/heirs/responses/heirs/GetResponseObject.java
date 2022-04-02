@@ -21,7 +21,14 @@ public class GetResponseObject extends RsObject {
         return response.jsonPath().get(RESULT_NAME_LOCATOR);
     }
 
-    public List<String> getPets() {
-        return response.jsonPath().getList("status");
+    public String getPetName() {
+        return response.jsonPath().get("name");
     }
+
+    public List<String> getPets() {
+        return response.jsonPath().getList("name");
+    }
+//    public String getPets() {
+//        return response.jsonPath().get();
+//    }
 }

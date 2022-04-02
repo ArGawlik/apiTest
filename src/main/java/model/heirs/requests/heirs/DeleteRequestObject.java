@@ -8,8 +8,12 @@ public class DeleteRequestObject extends RqObject {
         super(rqName);
     }
 
-    public void createRequestForDeletingUser(String petId) {
+    public void createRequestForDeletingPet(int petId) {
         setBaseUri("https://petstore.swagger.io/v2/pet/" + petId);
         setCommonParams();
+    }
+
+    public void createRequestForDeletetingUser(String username) {
+        setBaseUri("https://petstore.swagger.io/v2/user/" + username);
     }
 }

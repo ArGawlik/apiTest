@@ -16,9 +16,9 @@ public class Tests {
     @Test
     public void getPetById() {
         GetRequestObject getRequestObject = new GetRequestObject("asd");
-        getRequestObject.createRequestForGettingPetById("2");
+        getRequestObject.createRequestForGettingPetById(2137);
         GetResponseObject getResponseObject = new GetResponseObject("asd", getRequestObject.sendGetRequest());
-        Assert.assertEquals(getResponseObject.getUserName(),"Apolllo");
+        Assert.assertEquals(getResponseObject.getPetName(), "Rex");
     }
 
     @Test
@@ -28,13 +28,13 @@ public class Tests {
         GetResponseObject getResponseObject = new GetResponseObject("asd", getRequestObject.sendGetRequest());
         Assert.assertFalse(getResponseObject.getPets().isEmpty());
     }
-    @Test
-    public void getUsers() {
-        GetRequestObject getRequestObject = new GetRequestObject("asd");
-        getRequestObject.createRequestForGettingUsers();
-        GetResponseObject getResponseObject = new GetResponseObject("asd", getRequestObject.sendGetRequest());
-        Assert.assertFalse(getResponseObject.getPets().isEmpty());
-    }
+//    @Test
+//    public void getUsers() {
+//        GetRequestObject getRequestObject = new GetRequestObject("asd");
+//        getRequestObject.createRequestForGettingUsers();
+//        GetResponseObject getResponseObject = new GetResponseObject("asd", getRequestObject.sendGetRequest());
+//        Assert.assertFalse(getResponseObject.getPets().isEmpty());
+//    }
 
     @Test
     public void getUserByUserName() {
@@ -47,16 +47,24 @@ public class Tests {
     @Test
     public void createUser() {
         PostRequestObject postRequestObject = new PostRequestObject("asd");
-        postRequestObject.createRequestForCreatingUser(1, "username", "firstName", "lastName"
-        , "email@gmail.com", "some_password123", "123456789", 0);
+        postRequestObject.createRequestForCreatingUser(2137, "username", "firstName", "lastName"
+                , "email@gmail.com", "some_password123", "123456789", 0);
         PostResponseObject postResponseObject = new PostResponseObject("asd", postRequestObject.sendPostRequest());
         Assert.assertEquals(postResponseObject.getUserId(), "1");
     }
 
     @Test
-    public void deletePet(){
+    public void deleteUser() {
         DeleteRequestObject deleteRequestObject = new DeleteRequestObject("asd");
-        deleteRequestObject.createRequestForDeletingUser("1");
+        deleteRequestObject.createRequestForDeletetingUser("username");
+        DeleteResponseObject deleteResponseObject = new DeleteResponseObject("asd", deleteRequestObject.sendDeleteRequest());
+        Assert.assertEquals(deleteResponseObject.getStatusCode(), 200);
+    }
+
+    @Test
+    public void deletePet() {
+        DeleteRequestObject deleteRequestObject = new DeleteRequestObject("asd");
+        deleteRequestObject.createRequestForDeletingPet(1);
         DeleteResponseObject deleteResponseObject = new DeleteResponseObject("asd", deleteRequestObject.sendDeleteRequest());
         Assert.assertEquals(deleteResponseObject.getStatusCode(), 200);
     }
@@ -64,12 +72,12 @@ public class Tests {
     @Test
     public void createPet() {
         PostRequestObject postRequestObject = new PostRequestObject("asd");
-        Category category = new Category(1, "dog");
-        Tag tag = new Tag(123,"some tag");
-        postRequestObject.createRequestForCreatingPet(1, category, "Rex", "https://photo.com",tag,PetStatus.available);
+        Category category = new Category("1", "dog");
+        Tag tag = new Tag("123", "some tag");
+        Tag[] tags = new Tag[]{tag};
+        String[] urls = new String[]{"https://photo.com"};
+        postRequestObject.createRequestForAddingNewPet("2137", category, "Rex", urls, tags, PetStatus.available);
         PostResponseObject postResponseObject = new PostResponseObject("asd", postRequestObject.sendPostRequest());
         Assert.assertEquals(postResponseObject.getPetName(), "Rex");
     }
-
-
 }
