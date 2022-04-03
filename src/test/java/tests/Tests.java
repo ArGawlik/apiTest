@@ -18,7 +18,7 @@ public class Tests {
     @Test
     public void getPetById() {
         GetRequestObject getRequestObject = new GetRequestObject("asd");
-        getRequestObject.createRequestForGettingPetById("2137");
+        getRequestObject.createRequestForGettingPetById("12");
         GetResponseObject getResponseObject = new GetResponseObject("asd", getRequestObject.sendGetRequest());
         Assert.assertEquals(getResponseObject.getPetName(), "Rex");
     }

@@ -51,7 +51,7 @@ public class PostRequestObject extends RqObject {
 
     private JSONArray createTagAsJsonObject(Tag[] tags) {
         JSONArray jsonArray = new JSONArray();
-        for (Tag tag: tags) {
+        for (Tag tag : tags) {
             JSONObject requestBody = new JSONObject();
             requestBody.put("id", tag.getId());
             requestBody.put("name", tag.getName());
@@ -62,7 +62,7 @@ public class PostRequestObject extends RqObject {
 
     private JSONArray createArrayForPhotoUrls(String[] urls) {
         JSONArray jsonArray = new JSONArray();
-        for (String url: urls) {
+        for (String url : urls) {
             jsonArray.put(url);
         }
         return jsonArray;
@@ -74,5 +74,4 @@ public class PostRequestObject extends RqObject {
         requestBody.put("name", name);
         return requestBody;
     }
-
 }

@@ -3,9 +3,7 @@ package model.heirs.requests;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import log.Log;
 import model.RxObject;
-import org.apache.log4j.BasicConfigurator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,9 +19,7 @@ public class RqObject extends RxObject {
     public RqObject(String rqName) {
         super(rqName);
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-        BasicConfigurator.configure();
-        this.requestSpecification = RestAssured.given().auth().oauth2("8d3edc50fd5dbb75c78aa0e6b003827314f21f4aa8f03facd79465e78ef22e66");
-        this.requestSpecification = RestAssured.given().auth().oauth2("8d3edc50fd5dbb75c78aa0e6b003827314f21f4aa8f03facd79465c96ce44c55");
+        this.requestSpecification = RestAssured.given();
     }
 
     protected void setBaseUri() {
@@ -43,7 +39,6 @@ public class RqObject extends RxObject {
 
     public Response sendGetRequest() {
         return requestSpecification.get();
-//        return requestSpecification.expect().statusCode(200).log().ifError().when().get();
     }
 
     public Response sendPostRequest() {
