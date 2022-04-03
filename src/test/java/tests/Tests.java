@@ -28,7 +28,7 @@ public class Tests {
         GetRequestObject getRequestObject = new GetRequestObject("asd");
         getRequestObject.createRequestForGettingPetsByStatus(PetStatus.available);
         GetResponseObject getResponseObject = new GetResponseObject("asd", getRequestObject.sendGetRequest());
-        Assert.assertFalse(getResponseObject.getPets().isEmpty());
+        Assert.assertFalse(getResponseObject.getPetsStatusList().isEmpty());
     }
 //    @Test
 //    public void getUsers() {

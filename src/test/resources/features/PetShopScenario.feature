@@ -48,7 +48,7 @@ Feature: Scenario of pet shop api testing
     When User sends "GET" "getUserByUsernameRQ" request
 
     Then "getUserByUsernameRS" code is "200"
-    And User last name for "getUserByUsernameRS"  is "Rambo"
+    And User last name for "getUserByUsernameRS" is "Rambo"
 
   Scenario: Deleting user by username
 
@@ -66,3 +66,12 @@ Feature: Scenario of pet shop api testing
     When User sends "GET" "getUserByUsernameRQ" request
 
     Then "getUserByUsernameRS" code is "404"
+
+  Scenario: Getting all pets by status
+
+    Given User has "getPetsByStatusRQ" request with status "available" parameter
+
+    When User sends "GET" "getPetsByStatusRQ" request
+
+    Then "getPetsByStatusRS" code is "200"
+    And All pets from "getPetsByStatusRS" have status "available"

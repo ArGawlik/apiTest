@@ -12,7 +12,7 @@ public class Log {
 
     private static Logger loggerInstance;
 
-    private static Logger getLogger() {
+    public static Logger getLogger() {
         if (Objects.isNull(loggerInstance)) {
             loggerInstance = LoggerFactory.getLogger("Test logger");
         }

@@ -3,6 +3,7 @@ package model.heirs.responses.heirs;
 import io.restassured.response.Response;
 import model.heirs.responses.RsObject;
 
+import java.util.HashSet;
 import java.util.List;
 
 public class GetResponseObject extends RsObject {
@@ -11,10 +12,6 @@ public class GetResponseObject extends RsObject {
 
     public GetResponseObject(String rsName, Response response) {
         super(rsName, response);
-    }
-
-    public List<String> getAllUsers() {
-        return response.jsonPath().getList(RESULT_LOCATOR);
     }
 
     public String getUserName() {
@@ -29,10 +26,8 @@ public class GetResponseObject extends RsObject {
         return response.jsonPath().get("lastName");
     }
 
-    public List<String> getPets() {
-        return response.jsonPath().getList("name");
+    public List<String> getPetsStatusList() {
+        return response.jsonPath().getList("status");
     }
-//    public String getPets() {
-//        return response.jsonPath().get();
-//    }
+
 }

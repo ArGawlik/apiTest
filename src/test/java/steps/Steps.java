@@ -13,7 +13,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.cucumber.java.hu.De;
+import io.restassured.RestAssured;
 import model.heirs.requests.RqObject;
 import model.heirs.requests.heirs.DeleteRequestObject;
 import model.heirs.requests.heirs.GetRequestObject;
@@ -24,14 +24,14 @@ import model.heirs.responses.heirs.GetResponseObject;
 import model.heirs.responses.heirs.PostResponseObject;
 import org.testng.Assert;
 
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Steps {
-    private CategoriesStore categoriesStore = CategoriesStore.getInstance();
-    private RxStore rxStore = RxStore.getInstance();
-    private TagsStore tagsStore = TagsStore.getInstance();
+    private final CategoriesStore categoriesStore = CategoriesStore.getInstance();
+    private final RxStore rxStore = RxStore.getInstance();
+    private final TagsStore tagsStore = TagsStore.getInstance();
+
 
     @Given("Pet has category with following parameters")
     public void petHasCategoryWithFollowingParameters(DataTable dataTable) {
@@ -47,21 +47,6 @@ public class Steps {
             tagsStore.putTagIntoStore(tag.getId(), tag);
         }
     }
-
-//    @Given("User has {string} request with following parameters")
-//    public void userHasRequestWithFollowingParameters(String rqName, DataTable dataTable) {
-//        PostRequestObject postRequestObject = new PostRequestObject(rqName);
-//        List<String> dataList = dataTable.row(1);
-//        String id = dataList.get(0);
-//        Category category = categoriesStore.getCategoryFromStore(dataList.get(1));
-//        String name = dataList.get(2);
-//        String[] photoUrls = dataList.get(3).split(", ");
-//        Tag[] tags = Arrays.stream(dataList.get(4).split(", "))
-//                .map(x -> tagsStore.getTagFromStore(x)).toArray(Tag[]::new);
-//        PetStatus status = PetStatus.valueOf(dataList.get(5));
-//        postRequestObject.createRequestForAddingNewPet(id, category, name, photoUrls, tags, status);
-//        rxStore.putDataIntoStore(rqName, postRequestObject);
-//    }
 
     @Given("User has {string} request with following parameters")
     public void userHasRequestWithFollowingParameters(String rqName, DataTable dataTable) {
@@ -107,11 +92,13 @@ public class Steps {
     @And("Pet name in {string} response is {string}")
     public void petNameIs(String rsName, String petName) {
         RsObject postResponseObject = (RsObject) rxStore.getDataFromStore(rsName);
-        Assert.assertEquals(postResponseObject.getPetName(), petName);
+        Assert.assertEquals(postResponseObject.getPetName(), petName,
+                "Pet name is different");
     }
 
     @Given("User has {string} request with id {string}")
     public void userHasRequestWithId(String rqName, String petId) {
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
         GetRequestObject getRequestObject = new GetRequestObject(rqName);
         getRequestObject.createRequestForGettingPetById(petId);
 
@@ -121,7 +108,8 @@ public class Steps {
     @And("Message for {string} response is {string}")
     public void messageForResponseIs(String rsName, String messageId) {
         RsObject rsObject = (RsObject) rxStore.getDataFromStore(rsName);
-        Assert.assertEquals(rsObject.getMessage(), messageId);
+        Assert.assertEquals(rsObject.getMessage(), messageId,
+                "Message id is not as expected");
     }
 
     @Given("User has {string} request with username {string}")
@@ -132,10 +120,11 @@ public class Steps {
         rxStore.putDataIntoStore(rqName, getRequestObject);
     }
 
-    @And("User last name for {string}  is {string}")
+    @And("User last name for {string} is {string}")
     public void userLastNameForIs(String rsName, String lastName) {
         GetResponseObject getResponseObject = (GetResponseObject) rxStore.getDataFromStore(rsName);
-        Assert.assertEquals(getResponseObject.getUserLastName(), lastName);
+        Assert.assertEquals(getResponseObject.getUserLastName(), lastName,
+                "User's last name is not as expected");
     }
 
     @Given("User has {string} delete request with username {string}")
@@ -146,4 +135,20 @@ public class Steps {
         rxStore.putDataIntoStore(rqName, deleteRequestObject);
     }
 
+    @Given("User has {string} request with status {string} parameter")
+    public void userHasRequestWithStatusParameter(String rqName, String status) {
+        GetRequestObject getRequestObject = new GetRequestObject(rqName);
+        getRequestObject.createRequestForGettingPetsByStatus(PetStatus.valueOf(status));
+
+        rxStore.putDataIntoStore(rqName, getRequestObject);
+    }
+
+    @And("All pets from {string} have status {string}")
+    public void allPetsFromHaveStatus(String rsName, String status) {
+        GetResponseObject getResponseObject = (GetResponseObject) rxStore.getDataFromStore(rsName);
+        List<String> petStatusList = getResponseObject.getPetsStatusList();
+        Assert.assertEquals(new HashSet<>(petStatusList).size(),  1,
+                "Not all elements are the same");
+        Assert.assertEquals(petStatusList.get(0), status);
+    }
 }
